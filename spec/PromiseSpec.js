@@ -9,5 +9,19 @@ describe('Promise', () => {
           });
       });
     });
+
+    describe('combined with setTimeout()', () => {
+      it('works', done => {
+        spyOn(global, 'setTimeout');
+        global.setTimeout.and.callThrough();
+
+        new Promise(resolve => global.setTimeout(param => resolve(param), 0, 'test-parameter'))
+          .then(result => {
+            expect(result).toBe('test-parameter');
+            expect(global.setTimeout).toHaveBeenCalledTimes(1);
+            done();
+          });
+      });
+    });
   });
 });
