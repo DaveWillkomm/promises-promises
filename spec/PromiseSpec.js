@@ -1,5 +1,15 @@
 describe('Promise', () => {
   describe('executor', () => {
+    describe('resolved with a promise', () => {
+      it('resolves the original promise with a new promise', done => {
+        new Promise(resolve => resolve(Promise.resolve('test-resolution')))
+          .then(result => {
+            expect(result).toBe('test-resolution');
+            done();
+          });
+      });
+    });
+
     describe('given an exception is raised', () => {
       it('rejects the promise', done => {
         new Promise(() => { throw new Error('#failwhale'); })
@@ -11,7 +21,7 @@ describe('Promise', () => {
     });
 
     describe('combined with setTimeout()', () => {
-      it('works', done => {
+      it('resolves the promise later', done => {
         spyOn(global, 'setTimeout');
         global.setTimeout.and.callThrough();
 
