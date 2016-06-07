@@ -19,27 +19,29 @@ describe('Promise', () => {
     });
   });
 
-  describe('given an exception is raised', () => {
-    it('rejects the promise', done => {
-      new Promise(() => { throw new Error('#failwhale'); })
-        .catch(reason => {
-          expect(reason.message).toBe('#failwhale');
-          done();
-        });
+  describe('executor', () => {
+    describe('given an exception is raised', () => {
+      it('rejects the promise', done => {
+        new Promise(() => { throw new Error('#failwhale'); })
+          .catch(reason => {
+            expect(reason.message).toBe('#failwhale');
+            done();
+          });
+      });
     });
-  });
 
-  describe('combined with setTimeout()', () => {
-    it('resolves the promise later', done => {
-      spyOn(global, 'setTimeout');
-      global.setTimeout.and.callThrough();
+    describe('combined with setTimeout()', () => {
+      it('resolves the promise later', done => {
+        spyOn(global, 'setTimeout');
+        global.setTimeout.and.callThrough();
 
-      new Promise(resolve => global.setTimeout(param => resolve(param), 0, 'test-parameter'))
-        .then(result => {
-          expect(result).toBe('test-parameter');
-          expect(global.setTimeout).toHaveBeenCalledTimes(1);
-          done();
-        });
+        new Promise(resolve => global.setTimeout(param => resolve(param), 0, 'test-parameter'))
+          .then(result => {
+            expect(result).toBe('test-parameter');
+            expect(global.setTimeout).toHaveBeenCalledTimes(1);
+            done();
+          });
+      });
     });
   });
 });
